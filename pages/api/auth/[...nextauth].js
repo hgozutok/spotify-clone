@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
-import spotifyApi, { LOGIN_URL } from "../lib/spotify";
+import spotifyApi, { LOGIN_URL } from "../../../lib/spotify";
 
 async function refreshAccessToken(token) {
   try {
@@ -24,10 +24,16 @@ async function refreshAccessToken(token) {
 
 export default NextAuth({
   // Configure one or more authentication providers
+  //   NEXT_PUBLIC_SPOTIFY_CLIENT_ID:d8e0a70e016c4e1ca1bcaf628864ce72
+  // NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET:0950521c84854342a391f04486dde383
+
   providers: [
     SpotifyProvider({
-      clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
-      clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
+      clientId: "d8e0a70e016c4e1ca1bcaf628864ce72",
+      clientSecret: "0950521c84854342a391f04486dde383",
+
+      //   clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
+      //   clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
       authorization: LOGIN_URL,
     }),
     // ...add more providers here
