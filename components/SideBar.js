@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   HomeIcon,
   SearchIcon,
@@ -9,9 +9,29 @@ import {
   LogoutIcon,
 } from "@heroicons/react/solid";
 import { signOut, useSession } from "next-auth/react";
+//import spotifyApi from "../lib/spotify";
+import useSpotify from "../hooks/useSpotify";
+import { useRecoilState } from "recoil";
+import { playlistIdState } from "../atoms/playListAtom";
 
 function SideBar() {
+  const spotifyApi = useSpotify();
   const { data: session, status } = useSession();
+  const [playlists, setPlaylists] = React.useState([]);
+  const [playlistId, setPlaylistID] = useRecoilState(playlistIdState);
+  const getPlaylist = async () => {
+    await spotifyApi.getUserPlaylists().then((data) => {
+      setPlaylists(data.body.items);
+    });
+  };
+
+  useEffect(() => {
+    if (spotifyApi.getAccessToken()) {
+      getPlaylist();
+    }
+  }, [session, spotifyApi]);
+
+  console.log(playlists);
   console.log(session);
   return (
     <div className="text-gray-500 p-5 text-sm border-r border-gray-900">
@@ -51,6 +71,15 @@ function SideBar() {
         <p>Your Episodes</p>
       </button>
       <hr className="border-t-[0.1px]" />
+      {playlists.map((playlist) => (
+        <p
+          className="cursor-pointer hover:text-white"
+          onClick={() => setPlaylistID(playlist.id)}
+          key={playlist.id}
+        >
+          {playlist.name}
+        </p>
+      ))}
     </div>
   );
 }

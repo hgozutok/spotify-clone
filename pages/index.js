@@ -1,5 +1,8 @@
+import { getSession } from "next-auth/react";
 import Head from "next/head";
+import Center from "../components/Center";
 import SideBar from "../components/SideBar";
+import Songs from "../components/Songs";
 
 export default function Home() {
   return (
@@ -9,8 +12,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <main className="flex">
         <SideBar />
+        <Center />
+        <Songs />
       </main>
 
       <footer className="flex items-center justify-center w-full h-24 border-t">
@@ -18,4 +23,13 @@ export default function Home() {
       </footer>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  return {
+    props: {
+      session,
+    },
+  };
 }

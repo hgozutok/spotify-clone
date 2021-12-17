@@ -13,6 +13,7 @@ async function refreshAccessToken(token) {
       ...token,
       accessToken: refreshedToken.access_token,
       refreshToken: refreshedToken.refresh_token,
+      image: user.image,
       AccessTokenExpires: Date.now + refreshedToken.expires_in * 1000,
       refreshToken: refreshedToken.refresh_token ?? token.refreshToken,
     };
@@ -32,8 +33,8 @@ export default NextAuth({
       clientId: "d8e0a70e016c4e1ca1bcaf628864ce72",
       clientSecret: "0950521c84854342a391f04486dde383",
 
-      //   clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
-      //   clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
+      // clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
+      // clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
       authorization: LOGIN_URL,
     }),
     // ...add more providers here
@@ -50,7 +51,8 @@ export default NextAuth({
           accessToken: account.access_token,
           refreshToken: account.refresh_token,
           username: account.providerAccountId,
-          accessTokenExpires: account.expires_at,
+          image: user.image,
+          accessTokenExpires: account.expires_at * 1000,
         };
       }
       if (Date.now() < token.accessTokenExpires) {
@@ -66,6 +68,7 @@ export default NextAuth({
       session.user.accessTokenExpires = token.accessTokenExpires;
       session.user.refreshTokenExpires = token.refreshTokenExpires;
       session.user.username = token.username;
+      session.user.image = token.image;
       return session;
     },
   },
