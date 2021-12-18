@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { shuffle } from "lodash";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { playlistIdState, playlistState } from "../atoms/playListAtom";
 import useSpotify from "../hooks/useSpotify";
+import Songs from "./Songs";
 
 const colors = [
   "from-indigo-500",
@@ -45,17 +46,21 @@ function Center() {
   }, [spotifyApi, playlistId]);
 
   return (
-    <div className="flex flex-grow ">
+    <div className=" flex-grow h-screen overflow-y-scroll ">
       <header className="absolute top-5 right-8">
-        <div className="flex items-center bg-black text-white space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2">
+        <div
+          className="flex items-center bg-black 
+        text-white space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2"
+          onClick={() => signOut({ callbackUrl: "/" })}
+        >
           <img className="rounded-full w-10 h-10" src={session?.user.image} />
           <h2>{session?.user.username}</h2>
           <ChevronDownIcon className="w-6 h-6" />
         </div>
       </header>
       <section
-        className={`flex items-end space-x-7 bg-gradient-to-b to
-         to-black
+        className={`flex  items-end space-x-7 bg-gradient-to-b to
+         to-black 
        ${color} h-80 text-white padding-8 w-full`}
       >
         <img
@@ -69,6 +74,9 @@ function Center() {
           </h1>
         </div>
       </section>
+      <div>
+        <Songs />
+      </div>
     </div>
   );
 }

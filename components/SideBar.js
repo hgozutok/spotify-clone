@@ -34,15 +34,10 @@ function SideBar() {
   console.log(playlists);
   console.log(session);
   return (
-    <div className="text-gray-500 p-5 text-sm border-r border-gray-900">
-      <button
-        className="flex items-center space-x-2 hover:text-white"
-        onClick={() => signOut({ callbackUrl: "/" })}
-      >
-        <LogoutIcon className="h-5 w-5 text-blue-500" />
-        <p>Logout</p>
-      </button>
-
+    <div
+      className="text-gray-500 p-5 text-sm border-r 
+    border-gray-900 pb-36"
+    >
       <button className="flex items-center space-x-2 hover:text-white">
         <HomeIcon className="h-5 w-5 text-blue-500" />
         <p>Home</p>
